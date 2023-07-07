@@ -4,13 +4,20 @@
 找到只包含中文，或者只包含英文和数字的PDF。若包含图片、表格以及其他语言则丢弃。
 
 ## Usage
-见 `examples/example.py`
+```
+export PYTHONPATH="$PYTHONPATH:$PWD"
+```
+
+
+```
+python examples/example.py > logging.log 2>&1
+```
 
 
 ## Features
 - [x] 检查是否有图像、表格，有则报错
 - [x] 用正则表达式找出只包含中文、英文、中文和英文的PDF。
-  - [ ] 不少英文PDF包含法语字母。
+  - [x] 不少英文PDF包含法语字母, 这部分PDF也分类到“非英文”。
 
 ## More about pdf & PyMuPDF
 ### PyMuPDF Basic Intro

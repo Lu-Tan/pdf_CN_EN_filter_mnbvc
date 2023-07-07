@@ -4,28 +4,27 @@
  Author: Lu Tan
  Create Time: 2023/7/1
 """
-# from langchain.document_loaders import PyPDFLoader, PyMuPDFLoader, PDFMinerLoader
 from typing import List, Optional
-
-import numpy as np
 import fitz
 import re
 import string
+import json
 
-
-from .layout import page_layout
 
 
 def check_text_only(src_file: str):
     print(f"start checking {src_file}." )
-    doc = fitz.open(src_file, filetype='pdf')
-    assert isinstance(doc, fitz.Document)
-    for page in doc:
-        assert isinstance(page, fitz.Page)
-        if not check_page_format(page):
-            print(src_file + ' is not qualified.')
-            return False
-    return True
+    try:
+        doc = fitz.open(src_file, filetype='pdf')
+        assert isinstance(doc, fitz.Document)
+        for page in doc:
+            assert isinstance(page, fitz.Page)
+            if not check_page_format(page):
+                print(src_file + ' is not qualified.')
+                return False
+        return True
+    except:
+        print("Cannot open broken document")
 
 
 def check_for_tables(page):
@@ -105,4 +104,28 @@ def check_text_contains_only_CN_EN_and_numbers(file_path):
                 break
     return CN_EN_and_numbers_only
 
+def check_pdf_cls(src_file, text_only_list, more_than_text_list, CN_pdf_list, EN_pdf_list, CN_EN_pdf_list, other_lan_pdf_list):
+    if check_text_only(src_file):
+        print(src_file + ' contains TEXT only.')
+        text_only_list.append(src_file)
+        if check_text_contains_only_chinese_and_numbers(src_file):
+            print(src_file + ' is made up of Chinese words and numbers')
+            CN_pdf_list.append(src_file)
+        elif check_text_contains_only_english_and_numbers(src_file):
+            print(src_file + ' is made up of English words and numbers')
+            EN_pdf_list.append(src_file)
+        elif check_text_contains_only_CN_EN_and_numbers(src_file):
+            print(src_file + ' is made up of Chinses words, English words and numbers')
+            CN_EN_pdf_list.append(src_file)
+        else:
+            print(src_file + ' is more than Chinese words, English words and numbers')
+            other_lan_pdf_list.append(src_file)
+    else:
+        print(src_file + ' is composed of more than texts.')
+        more_than_text_list.append(src_file)
 
+def save_list2jsonl(res_list, jsonl_file):
+    with open(jsonl_file, 'w') as file:
+        for item in res_list:
+            json.dump(item, file)
+            file.write('\n')

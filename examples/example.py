@@ -6,9 +6,27 @@
 """
 import pdf_lan_filter
 import os 
+import argparse
 
-pdf_directory = '../pdf/2023'
-pdf_cls_results = 'pdf_cls_results'
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--pdf_directory",
+        type=str,
+        help="The directory for PDF files.",
+    )   
+    parser.add_argument(
+        "--pdf_cls_results",
+        type=str,
+        help="The directory for PDF files.",
+    )
+    parsed_args = parser.parse_args()
+    return parsed_args
+
+args = parse_arguments()
+
+pdf_directory = args.pdf_directory
+pdf_cls_results = args.pdf_cls_results
 if not os.path.exists(pdf_cls_results):
     os.makedirs(pdf_cls_results)
 
@@ -33,7 +51,7 @@ print("There are " + str(len(text_only_list)) + ' PDF files contains text ONLY.'
 
 more_than_text_file = os.path.join(pdf_cls_results, 'more_than_txt_file.jsonl')
 pdf_lan_filter.save_list2jsonl(more_than_text_list, more_than_text_file)
-print("There are " + str(len(more_than_text_list) + ' PDF files contains more than text.(image, tables, etc.)'))
+print("There are " + str(len(more_than_text_list)) + ' PDF files contains more than text.(image, tables, etc.)')
 
 CN_pdf_file = os.path.join(pdf_cls_results, 'CN_pdf_file.jsonl')
 pdf_lan_filter.save_list2jsonl(CN_pdf_list, CN_pdf_file)

@@ -2,8 +2,27 @@ import json
 import shutil
 import os
 
-src_path = '/Users/tanlu/Documents/PDF_classifier/pdf2txt_mnbvc-master/pdf_cls_results/CN_pdf_file.jsonl'
-tgt_foler = 'CN_PDF'
+import argparse
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--src_path",
+        type=str,
+        help="The jsonl path with PDF paths in each line.",
+    )   
+    parser.add_argument(
+        "--tgt_folder",
+        type=str,
+        help="The target directory for copied PDF files.",
+    )
+    parsed_args = parser.parse_args()
+    return parsed_args
+
+args = parse_arguments()
+
+src_path = args.src_path
+tgt_foler = args.tgt_folder
 if not os.path.exists(tgt_foler):
     os.makedirs(tgt_foler)
 

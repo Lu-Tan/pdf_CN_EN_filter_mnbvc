@@ -13,6 +13,7 @@
 ```shell
 python script.py --source_folder 源文件夹的路径 --destination_folder 目标文件夹的路径 --jsonline_folder ./log --encoding utf-8
 ```
+python pdf_copy_rename.py --source_folder /Users/tanlu/Documents/PDF_classifier/pdf --destination_folder /Users/tanlu/Documents/PDF_classifier/renamed_pdf --jsonline_folder ./log --encoding utf-8
 
 - `--source_folder`：指定源文件夹的路径。
 - `--destination_folder`：指定目标文件夹的路径。
@@ -26,16 +27,24 @@ python script.py --source_folder 源文件夹的路径 --destination_folder 目�
 ```shell
 python pdf_lang_classifier.py --pdf_directory PDF文件所在目录 --log_directory 日志文件保存目录
 ```
+全中文的测试：
+python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classifier/test_pdf/test 
+其他测试：
+python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classifier/test_pdf/0001
 
 - `--pdf_directory`：指定待分类的 PDF 文件所在的目录。
 - `--log_directory`（可选）：指定日志文件的保存目录，默认为 ./log。
 
+### 分类结果说明
+- 分类结果 jsonl 文件包含很多行，每一行代表某个PDF文件的某一页。
+- 只对 "obj_type" 为 "text" 的页面做语言类别分析
+- "language_type"是一个 list, 若包含 "None"，则说明此页面包含了除中英文以外的字符。
 ### 复制分类结果
 
 在完成分类并得到多个 JSONL 文件后，可以运行 `copy_files.py` 脚本将某个 JSONL 文件中的 PDF 文件复制到指定目录。
 
 ```shell
-python mv_files.py --src_path '/Users/tanlu/Documents/PDF_classifier/pdf2txt_mnbvc-master/pdf_cls_results/CN_pdf_file.jsonl' --tgt_folder 'CN_PDF'
+python copy_files.py --src_path '/Users/tanlu/Documents/PDF_classifier/pdf_CN_EN_filter_mnbvc/pdf_classification.jsonl' --tgt_folder 'CN_PDF'
 ```
 
 以上命令将复制指定 JSONL 文件中的 PDF 文件到 `CN_PDF` 目录中。

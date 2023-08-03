@@ -28,7 +28,8 @@ if not os.path.exists(tgt_folder):
 with open(src_path, 'r') as file:
     lines = file.readlines()
 for line in lines:
-    file_path = line.strip()[1:-1]
+    line = json.loads(line)
+    file_path = line['file_path']
     # Check if the source file exists before copying
     if os.path.exists(file_path):
         shutil.copy(file_path, tgt_folder)

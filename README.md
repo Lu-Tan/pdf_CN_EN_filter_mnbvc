@@ -36,7 +36,7 @@ python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classif
 - `--pdf_directory`：指定待分类的 PDF 文件所在的目录。
 - `--log_directory`（可选）：指定日志文件的保存目录，默认为 ./log。
 
-### 分类结果说明
+#### 分类结果说明
 - 分类结果 jsonl 文件包含很多行，每一行代表某个PDF文件的某一页。
 - 只对 "obj_type" 为 "text" 的页面做语言类别分析
 - "language_type"是一个 list, 若包含 "None"，则说明此页面包含了除中英文以外的字符。

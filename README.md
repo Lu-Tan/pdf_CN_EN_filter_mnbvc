@@ -13,7 +13,8 @@
 ```shell
 python script.py --source_folder 源文件夹的路径 --destination_folder 目标文件夹的路径 --jsonline_folder ./log --encoding utf-8
 ```
-python pdf_copy_rename.py --source_folder /Users/tanlu/Documents/PDF_classifier/pdf --destination_folder /Users/tanlu/Documents/PDF_classifier/renamed_pdf --jsonline_folder ./log --encoding utf-8
+
+<!-- python pdf_copy_rename.py --source_folder /Users/tanlu/Documents/PDF_classifier/pdf --destination_folder /Users/tanlu/Documents/PDF_classifier/renamed_pdf --jsonline_folder ./log --encoding utf-8 -->
 
 - `--source_folder`：指定源文件夹的路径。
 - `--destination_folder`：指定目标文件夹的路径。
@@ -27,10 +28,10 @@ python pdf_copy_rename.py --source_folder /Users/tanlu/Documents/PDF_classifier/
 ```shell
 python pdf_lang_classifier.py --pdf_directory PDF文件所在目录 --log_directory 日志文件保存目录
 ```
-全中文的测试：
+<!-- 全中文的测试：
 python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classifier/test_pdf/test 
 其他测试：
-python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classifier/test_pdf/0001
+python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classifier/test_pdf/0001 -->
 
 - `--pdf_directory`：指定待分类的 PDF 文件所在的目录。
 - `--log_directory`（可选）：指定日志文件的保存目录，默认为 ./log。
@@ -39,6 +40,27 @@ python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classif
 - 分类结果 jsonl 文件包含很多行，每一行代表某个PDF文件的某一页。
 - 只对 "obj_type" 为 "text" 的页面做语言类别分析
 - "language_type"是一个 list, 若包含 "None"，则说明此页面包含了除中英文以外的字符。
+  
+
+### 检测PDF内是否只包含文字
+在 `pdf_lang_classifier.py` 中，通过修改 `--identify_languages` 参数为0，然后指定待分类的 PDF 文件所在的目录，运行脚本即可对 PDF 进行分类，并将分类结果保存到 `pdf_classification.jsonl` 文件中。
+
+```shell
+python pdf_lang_classifier.py --pdf_directory PDF文件所在目录 --log_directory 日志文件保存目录 --identify_languages 0
+```
+
+- `--pdf_directory`：指定待分类的 PDF 文件所在的目录。
+- `--log_directory`（可选）：指定日志文件的保存目录，默认为 ./log。
+- `--identify_languages`: 是否识别文字的语言类型。默认为1，但若只需检测 PDF 是否只包含文字而无需检测文字的语言类型时，建议指定为0.
+
+<!-- python pdf_lang_classifier.py --pdf_directory /Users/tanlu/Documents/PDF_classifier/test_pdf/test --identify_languages 0 -->
+
+#### 分类结果说明
+- 分类结果 jsonl 文件包含很多行，每一行代表某个PDF文件的某一页的结果。
+- 若 "text_only" 为1，则说明该页 PDF 只包含文本，不包含图片以及可能存在的表格。
+  
+
+
 ### 复制分类结果
 
 在完成分类并得到多个 JSONL 文件后，可以运行 `copy_files.py` 脚本将某个 JSONL 文件中的 PDF 文件复制到指定目录。

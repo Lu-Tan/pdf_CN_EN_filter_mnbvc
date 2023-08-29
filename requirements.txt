@@ -3,3 +3,4 @@ loguru
 zhon
 pdfplumber
 lingua
+lingua-language-detector
